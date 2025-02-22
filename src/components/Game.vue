@@ -3,6 +3,16 @@ import { ref } from "vue";
 import { generate } from "random-words";
 import PlayButton from "./PlayButton.vue";
 
+const imgUrls = import.meta.glob("../assets/*.svg", {
+  import: "default",
+  eager: true,
+});
+
+const gifUrls = import.meta.glob("../assets/*.gif", {
+  import: "default",
+  eager: true,
+});
+
 const word = ref(generate({ exactly: 1, wordsPerString: 1 })[0]);
 const lettersAttempted = ref([]);
 const isGameOverSuccess = ref(false);
@@ -82,11 +92,14 @@ console.log(word.value);
     </button>
   </div>
   <div class="image-wrapper">
-    <img :src="`/hangman/hangman-${wrongGuesses}.svg`" alt="Hangman Image" />
+    <img
+      :src="imgUrls[`../assets/hangman-${wrongGuesses}.svg`]"
+      alt="Hangman Image"
+    />
   </div>
   <div v-if="isGameOverFailure" class="game-over-modal">
     <div class="content">
-      <img src="/hangman/lost.gif" alt="You lost image" />
+      <img :src="gifUrls['../assets/lost.gif']" alt="You lost image" />
       <div class="text">
         Game over! The correct word was: <b>{{ word }}.</b>
       </div>
@@ -95,7 +108,7 @@ console.log(word.value);
   </div>
   <div v-if="isGameOverSuccess" class="victory-modal">
     <div class="content">
-      <img src="/hangman/victory.gif" alt="You won image" />
+      <img :src="gifUrls['../assets/victory.gif']" alt="You won image" />
       <div class="congratulations-title">Congratulations!</div>
       <div class="text">
         You found the word: <b>{{ word }}.</b>
